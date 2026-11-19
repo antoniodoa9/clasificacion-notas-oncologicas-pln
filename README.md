@@ -4,6 +4,8 @@ Clasificación automática de notas clínicas reales en español (ya anonimizada
 
 *Classification of real anonymized Spanish clinical oncology notes (single vs multiple neoplasms) with a classic NLP pipeline, BoW/TF-IDF/embeddings and several classifiers, evaluated with repeated cross-validation, permutation tests and nested cross-validation.*
 
+🇬🇧 **English version:** [read it below](#english-version)
+
 Lo hemos hecho como práctica individual de **Minería de Textos** del Grado en Ingeniería de la Salud (Universidad de Málaga, curso 2026/27).
 
 ![Evolución del AUC desde el modelo base hasta el mejor modelo](figuras/evolucion_auc.png)
@@ -45,5 +47,42 @@ figuras/                                  todas las gráficas del cuaderno
 El cuaderno está pensado para Google Colab con Python 3 (pandas, scikit-learn, NLTK, spaCy, gensim, matplotlib y seaborn). Para ejecutarlo hace falta el fichero de datos de la asignatura, que no se incluye.
 
 ## Autor
+
+Antonio Sánchez Doña.
+
+---
+
+## English version
+
+Automatic classification of real Spanish clinical notes (already anonymised) from oncology patients, to detect whether each patient has **a single neoplasm or several**. We built the full classic natural language processing (NLP) pipeline and compared many preprocessing, representation and model choices with a careful statistical evaluation.
+
+This was an individual assignment for **Text Mining** in the Health Engineering degree (University of Málaga, 2026/27).
+
+### Data
+
+The corpus is 239 anonymised clinical notes from oncology patients, provided by the course. **They are not published**: they are real clinical data shared only for teaching. That is why the notebook in this repository does not include the data, and in the public version we removed the outputs and comments that showed parts of the notes. Everything else (code, plots, result tables and interpretation) is complete.
+
+### What we did
+
+1. **Exploratory analysis** of the corpus: note length, number of sentences and number of words by class.
+2. **Preprocessing** with NLTK and spaCy: tokenisation, stopwords, punctuation, lowercase, stemming and lemmatisation.
+3. **Text representation** with Bag of Words, n-grams, TF-IDF and embeddings (Word2Vec, fastText and Doc2Vec).
+4. **Models**: L1 and L2 logistic regression, linear and RBF SVM, Random Forest, Naive Bayes, a neural network (MLP) and Gradient Boosting.
+5. **Evaluation**: stratified cross-validation repeated with 30 seeds, permutation tests, comparison with trivial models (chance and text length) and nested cross-validation to tune hyperparameters without bias.
+6. **Interpretation**: most important words for each model, how stable those words are across seeds, and analysis of the false negatives.
+7. **Clinical threshold**: we chose the decision threshold thinking about real use, so that patients with several neoplasms are not missed.
+
+### Main results
+
+- The best model (spaCy lemmatisation, Bag of Words and Random Forest) raises the **AUC from 0.733 to 0.827** compared with the baseline model.
+- With the threshold chosen for clinical use it detects **91 %** of the patients with several neoplasms.
+- The most useful words make clinical sense, such as *sincrónico* (synchronous), *neoplasia* (neoplasm) or *bilateral*.
+- Most errors are very short notes, or notes where the second neoplasm is not mentioned in the text, so they cannot be fixed by changing the model.
+
+### How to run it
+
+The notebook is designed for Google Colab with Python 3 (pandas, scikit-learn, NLTK, spaCy, gensim, matplotlib and seaborn). Running it requires the course data file, which is not included.
+
+### Author
 
 Antonio Sánchez Doña.
